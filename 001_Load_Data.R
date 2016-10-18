@@ -96,14 +96,14 @@ test_V2 = test[,-1]
 library(gbm)
 it = 5000
 
-train_gbm1 = gbm(log(train_V2$SalePrice)~., data=train_V2, distribution="gaussian", interaction.depth = 1, 
+train_gbm1 = gbm(train_V2$SalePrice~., data=train_V2, distribution="gaussian", interaction.depth = 1, 
              shrinkage=0.05, n.trees=it,cv.folds=5,n.cores=4)
 
 best.iter <- gbm.perf(train_gbm1,method="OOB")
 print(best.iter)
 
 predict_train_gbm1 = predict(train_gbm1,train_V2,best.iter)
-print(sum((log(train_V2$SalePrice)-predict_train_gbm1)^2))
+print(sqrt(mean((train_V2$SalePrice-predict_train_gbm1)^2)))
 
 predict_test_gbm1 = predict(train_gbm1,test_V2,best.iter)
 

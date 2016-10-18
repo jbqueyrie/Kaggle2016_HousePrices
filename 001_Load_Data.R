@@ -107,3 +107,8 @@ print(sqrt(mean((train_V2$SalePrice-predict_train_gbm1)^2)))
 
 predict_test_gbm1 = predict(train_gbm1,test_V2,best.iter)
 
+sub = data.frame(test$Id,predict_test_gbm1)
+names(sub)[names(sub)=="test.Id"] <- "Id"
+names(sub)[names(sub)=="predict_test_gbm1"] <- "SalePrice"
+
+write.csv2(sub,file=paste(dir,"/sub.csv",sep=""),row.names=F)

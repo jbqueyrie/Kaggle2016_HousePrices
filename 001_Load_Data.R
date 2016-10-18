@@ -89,7 +89,7 @@ plotDen <- function(data_in, i){
 }
 
 
-# Simple RF with all other variables (no feature engineering)
+# Simple GBM with all other variables (no feature engineering)
 train_V2 = train[,-1]
 test_V2 = test[,-1]
 

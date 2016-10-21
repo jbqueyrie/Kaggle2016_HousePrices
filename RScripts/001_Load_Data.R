@@ -34,14 +34,22 @@ cat_var <- names(train)[which(sapply(train, is.character))]
 cat_car <- c(cat_var, 'BedroomAbvGr', 'HalfBath', ' KitchenAbvGr','BsmtFullBath', 'BsmtHalfBath', 'MSSubClass')
 num_var <- names(train)[which(sapply(train, is.numeric))]
 
+
 # Convert ID to character
 train[,1] = as.character(train[,1])
 test[,1] = as.character(test[,1])
+
+
+# Convert integer variables to factors
+names=c('MSSubClass','OverallQual','OverallCond')
+train[,names] <- lapply(train[,names] , factor)
+test[,names] <- lapply(test[,names] , factor)
 
 str(train)
 str(test)
 
 dt.out = dt[, list(v1 = sum(v1),  lapply(.SD,mean)), by = grp, .SDcols = sd.cols]
+
 
 # Summary statistics for each variable
 summary(train)

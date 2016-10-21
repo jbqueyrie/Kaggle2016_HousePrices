@@ -1,4 +1,4 @@
-# Kaggle2016_HousePrices
+# House Prices: Advanced Regression Techniques (Kaggle Competition: 08/30/2016 - 03/01/2017)
 Git on RStudio and Association with GitHub
 
 ## Description
@@ -11,7 +11,7 @@ The potential for creative feature engineering provides a rich opportunity for f
 ## Acknowledgements
 The Ames Housing dataset was compiled by Dean De Cock for use in data science education. It's an incredible alternative for data scientists looking for a modernized and expanded version of the often cited Boston Housing dataset.
 
-## About the author
+# About the author
 Jean-Baptiste Queyrie
-Consultant in Data Science - Groupe Viseo
-jbqueyrie@gmail.com
+- Consultant in Data Science - Groupe Viseo
+- jbqueyrie@gmail.com

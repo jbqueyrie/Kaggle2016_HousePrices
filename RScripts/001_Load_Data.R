@@ -34,7 +34,7 @@ cat_var <- names(train)[which(sapply(train, is.character))]
 cat_car <- c(cat_var, 'BedroomAbvGr', 'HalfBath', ' KitchenAbvGr','BsmtFullBath', 'BsmtHalfBath', 'MSSubClass')
 num_var <- names(train)[which(sapply(train, is.numeric))]
 
-# Convert ID to factor
+# Convert ID to character
 train[,1] = as.character(train[,1])
 test[,1] = as.character(test[,1])
 
@@ -43,14 +43,11 @@ str(test)
 
 dt.out = dt[, list(v1 = sum(v1),  lapply(.SD,mean)), by = grp, .SDcols = sd.cols]
 
-# Check missing values: global / cat_var / num_var
-colSums(sapply(train, is.na))
-colSums(sapply(train[,.SD,.SDcols = cat_var], is.na))
-colSums(sapply(train[,.SD,.SDcols = num_var], is.na))
-
+# Summary statistics for each variable
 summary(train)
 
-# Check log(SalePrice)
+
+# Check log(SalePrice) - variable to explain
 par(mfrow=c(1,2))
 hist(train$SalePrice,xlab="Sale price",main="Sale prices distribution",col="blue")
 hist(log(train$SalePrice),xlab="Log sale price",main="Log sale prices distribution",col="red")
@@ -58,7 +55,9 @@ hist(log(train$SalePrice),xlab="Log sale price",main="Log sale prices distributi
 par(mfrow=c(1,2))
 hist(log(train$SalePrice),xlab="Log sale price",main="Log sale prices distribution",col="red")
 qqnorm(log(train$SalePrice), main="Normal QQ-plot for log(SalePrice)")
-qqline(log(train$SalePrice))
+qqline(log(train$SalePrice)) # -> Not to confident about normality of log(SalePrice)
+
+shapiro.test(log(train$SalePrice)) # -> Normality does not hold, p-value < 0.05 (or even 0.01 for that matter)
 
 
 # Plot lots of variables
@@ -87,3 +86,9 @@ plotDen <- function(data_in, i){
     xlab(paste0((colnames(data_in)[i]), '\n', 'Skewness: ',round(skewness(data_in[[i]], na.rm = TRUE), 2))) + theme_light() 
   return(p)
 }
+
+
+# Check missing values: global / cat_var / num_var
+colSums(sapply(train, is.na))
+colSums(sapply(train[,.SD,.SDcols = cat_var], is.na))
+colSums(sapply(train[,.SD,.SDcols = num_var], is.na))

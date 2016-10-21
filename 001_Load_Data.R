@@ -35,8 +35,8 @@ cat_car <- c(cat_var, 'BedroomAbvGr', 'HalfBath', ' KitchenAbvGr','BsmtFullBath'
 num_var <- names(train)[which(sapply(train, is.numeric))]
 
 # Convert ID to factor
-train[,1] = as.factor(train[,1])
-test[,1] = as.factor(test[,1])
+train[,1] = as.character(train[,1])
+test[,1] = as.character(test[,1])
 
 str(train)
 str(test)
@@ -87,28 +87,3 @@ plotDen <- function(data_in, i){
     xlab(paste0((colnames(data_in)[i]), '\n', 'Skewness: ',round(skewness(data_in[[i]], na.rm = TRUE), 2))) + theme_light() 
   return(p)
 }
-
-
-# Simple GBM with all other variables (no feature engineering)
-train_V2 = train[,-1]
-test_V2 = test[,-1]
-
-library(gbm)
-it = 5000
-
-train_gbm1 = gbm(train_V2$SalePrice~., data=train_V2, distribution="gaussian", interaction.depth = 1, 
-             shrinkage=0.05, n.trees=it,cv.folds=5,n.cores=4)
-
-best.iter <- gbm.perf(train_gbm1,method="OOB")
-print(best.iter)
-
-predict_train_gbm1 = predict(train_gbm1,train_V2,best.iter)
-print(sqrt(mean((train_V2$SalePrice-predict_train_gbm1)^2)))
-
-predict_test_gbm1 = predict(train_gbm1,test_V2,best.iter)
-
-sub = data.frame(test$Id,predict_test_gbm1)
-names(sub)[names(sub)=="test.Id"] <- "Id"
-names(sub)[names(sub)=="predict_test_gbm1"] <- "SalePrice"
-
-write.csv2(sub,file=paste(dir,"/sub.csv",sep=""),row.names=F)
